@@ -4,8 +4,33 @@ using UnityEngine;
 
 public class CameraController : MonoBehaviour
 {
-    //Taken from the GamesPlusJames tutorial
+    public Vector3 offset;
 
+    public Transform target;
+
+    public Transform pivot;
+
+    public float rotateSpeed;
+
+    void Start()
+    {
+        pivot.transform.position = target.transform.position;
+        pivot.transform.parent = target.transform;
+    }
+
+    void LateUpdate()
+    {
+        //Get the X position of the mouse & rotate the target
+        float horizontal = Input.GetAxis("Mouse X") * rotateSpeed;
+        target.Rotate(0, horizontal, 0);
+
+        //Get te Y position of the mouse and rotate the pivot
+        float vertical = Input.GetAxis("Mouse Y") * rotateSpeed;
+        pivot.Rotate(-vertical, 0, 0);
+    }
+
+    //Taken from the GamesPlusJames tutorial
+    /*
     public Transform target;
 
     public Vector3 offset;
@@ -52,4 +77,5 @@ public class CameraController : MonoBehaviour
 
         transform.LookAt(target);
     }
+    */
 }
