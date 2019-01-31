@@ -17,11 +17,13 @@ public class PlayerController : MonoBehaviour
 
     public float h, v;
 
+    public bool isGrounded;
+
     // Start is called before the first frame update
     void Start()
     {
-        anim = GetComponent<Animator>();
         //rb = GetComponent<Rigidbody>();
+        anim = GetComponent<Animator>();
         controller = GetComponent<CharacterController>();
     }
 
@@ -38,13 +40,9 @@ public class PlayerController : MonoBehaviour
         */
 
         //moveDirection = new Vector3(Input.GetAxis("Horizontal") * moveSpeed, moveDirection.y, Input.GetAxis("Vertical") * moveSpeed);
-        h = Input.GetAxis("Horizontal"); v = Input.GetAxis("Vertical");
-
-        if (h == 0.0f && v == 0.0f)
-            anim.SetBool("isMoving", false);
-        else if (h != 0.0f || v != 0.0f)
-            anim.SetBool("isMoving", true);
-
+        isGrounded = controller.isGrounded;
+        h = Input.GetAxis("Horizontal");
+        v = Input.GetAxis("Vertical");
         float yStore = moveDirection.y;
         moveDirection = (transform.forward * v) + (transform.right * h);
         moveDirection = moveDirection.normalized * moveSpeed;
@@ -64,5 +62,6 @@ public class PlayerController : MonoBehaviour
         controller.Move(moveDirection * Time.deltaTime);
 
         anim.SetBool("isGrounded", controller.isGrounded);
+        anim.SetFloat("Speed", Mathf.Abs(Input.GetAxis("Vertical")) * Mathf.Abs(Input.GetAxis("Horizontal")));
     }
 }
